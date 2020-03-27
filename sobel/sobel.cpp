@@ -1,20 +1,31 @@
-﻿// sobel.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
+﻿#include <opencv2/opencv.hpp>
 #include <iostream>
+
+using namespace cv;
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	cv::Mat dst1;
+	cv::Mat dst2;
+	cv::Mat adst1;
+	cv::Mat adst2;
+	VideoCapture cap;
+	cap.open(0);
+	while (1)
+	{
+		cv::Mat frame;
+		bool rSucess = cap.read(frame);
+
+		Sobel(frame, dst1,CV_16SC1,1,0,3) ;
+		Sobel(frame, dst2,CV_16SC1,0,1,3);
+		convertScaleAbs(dst1, adst1);
+		convertScaleAbs(dst2, adst2);
+		cv::imshow("frame ", frame);
+		cv::imshow("adst1 ", adst1);
+		cv::imshow("adst2 ", adst2);
+		waitKey(30);
+
+	}
+	return 0;
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
